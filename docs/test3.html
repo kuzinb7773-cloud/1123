@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Тест — Пожарная безопасность</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="site.js"></script>
+</head>
+<body class="page-tests">
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html">Сотрудники</a>
+        <a href="scheme.html">Схема депо</a>
+        <a href="profile.html">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="quiz-header">
+      <h2>🔥 Пожарная безопасность</h2>
+      <p>10 вопросов • Минимум 80% для прохождения</p>
+    </div>
+
+    <div id="auth-gate" class="quiz-auth-gate">
+      <div class="gate-icon">🔒</div>
+      <h3>Требуется авторизация</h3>
+      <p>Для прохождения теста необходимо войти в личный кабинет.</p>
+      <a href="profile.html" class="btn btn-primary">Войти в личный кабинет</a>
+    </div>
+
+    <form id="quiz" style="display:none" class="quiz-form">
+      <div class="quiz-progress">
+        <span class="progress-label">Ответьте на все вопросы</span>
+        <span class="progress-count" id="answered">0 / 10</span>
+      </div>
+
+      <ol>
+        <li class="quiz-question">
+          <p>1. По какому номеру вызывается пожарная охрана?</p>
+          <label><input type="radio" name="q1" value="101"> 101 (с мобильного — 112)</label>
+          <label><input type="radio" name="q1" value="102"> 102</label>
+          <label><input type="radio" name="q1" value="103"> 103</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>2. Что необходимо сделать в первую очередь при обнаружении пожара?</p>
+          <label><input type="radio" name="q2" value="call"> Сообщить в пожарную охрану и руководству</label>
+          <label><input type="radio" name="q2" value="run"> Покинуть здание</label>
+          <label><input type="radio" name="q2" value="hide"> Спрятаться в безопасном месте</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>3. Где разрешается курить на территории депо?</p>
+          <label><input type="radio" name="q3" value="designated"> Только в специально оборудованных местах</label>
+          <label><input type="radio" name="q3" value="outside"> На улице в любом месте</label>
+          <label><input type="radio" name="q3" value="workshop"> В цехах с хорошей вентиляцией</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>4. Как следует хранить промасленную ветошь?</p>
+          <label><input type="radio" name="q4" value="metal"> В металлических ящиках с крышками</label>
+          <label><input type="radio" name="q4" value="plastic"> В полиэтиленовых пакетах</label>
+          <label><input type="radio" name="q4" value="floor"> На полу рядом с рабочим местом</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>5. Какой огнетушитель нельзя использовать для тушения электроустановок под напряжением?</p>
+          <label><input type="radio" name="q5" value="water"> Водный (ОВ)</label>
+          <label><input type="radio" name="q5" value="co2"> Углекислотный (ОУ)</label>
+          <label><input type="radio" name="q5" value="powder"> Порошковый (ОП)</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>6. Каково минимальное расстояние от места хранения горючих материалов до источников огня?</p>
+          <label><input type="radio" name="q6" value="5m"> 5 метров</label>
+          <label><input type="radio" name="q6" value="1m"> 1 метр</label>
+          <label><input type="radio" name="q6" value="10m"> 10 метров</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>7. Что необходимо сделать перед началом огневых работ (сварка, резка)?</p>
+          <label><input type="radio" name="q7" value="permit"> Оформить наряд-допуск на огневые работы</label>
+          <label><input type="radio" name="q7" value="nothing"> Достаточно устного разрешения</label>
+          <label><input type="radio" name="q7" value="start"> Начать работу и потом оформить документы</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>8. Допускается ли загромождение путей эвакуации и выходов?</p>
+          <label><input type="radio" name="q8" value="no"> Категорически запрещено</label>
+          <label><input type="radio" name="q8" value="temp"> Допускается временно</label>
+          <label><input type="radio" name="q8" value="yes"> Допускается при наличии запасного выхода</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>9. Как часто проводится проверка первичных средств пожаротушения?</p>
+          <label><input type="radio" name="q9" value="quarter"> Не реже 1 раза в квартал</label>
+          <label><input type="radio" name="q9" value="year"> 1 раз в год</label>
+          <label><input type="radio" name="q9" value="5years"> 1 раз в 5 лет</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>10. Что запрещается делать при тушении пожара водой?</p>
+          <label><input type="radio" name="q10" value="electric"> Тушить электроустановки под напряжением</label>
+          <label><input type="radio" name="q10" value="wood"> Тушить деревянные конструкции</label>
+          <label><input type="radio" name="q10" value="paper"> Тушить бумагу и картон</label>
+        </li>
+      </ol>
+
+      <div class="quiz-actions">
+        <button type="button" id="finish" class="btn btn-primary" style="padding:16px 48px;font-size:17px;">✅ Завершить тест</button>
+      </div>
+    </form>
+
+    <div id="result" class="quiz-result" style="display:none"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('quiz').style.display = '';
+    }
+
+    var form = document.getElementById('quiz');
+    form.addEventListener('change', function(){
+      var total = 10;
+      var answered = 0;
+      for(var i=1;i<=total;i++){
+        if(form.querySelector('input[name="q'+i+'"]:checked')) answered++;
+      }
+      document.getElementById('answered').textContent = answered + ' / ' + total;
+    });
+
+    document.getElementById('finish').addEventListener('click', function(){
+      var answers = { q1: '101', q2: 'call', q3: 'designated', q4: 'metal', q5: 'water', q6: '5m', q7: 'permit', q8: 'no', q9: 'quarter', q10: 'electric' };
+      var score = 0;
+      var fd = new FormData(form);
+      for (var key in answers){
+        if (fd.get(key) === answers[key]) score++;
+      }
+      var total = Object.keys(answers).length;
+      var percent = Math.round(score / total * 100);
+      var result = document.getElementById('result');
+      var passed = percent >= 80;
+      result.className = 'quiz-result ' + (passed ? 'pass' : 'fail');
+      result.style.display = 'block';
+      result.innerHTML = '<div class="result-icon">' + (passed ? '🎉' : '😔') + '</div>' +
+        '<div class="result-score">' + percent + '%</div>' +
+        '<strong>' + score + ' из ' + total + ' правильных ответов</strong>' +
+        '<div class="result-text">' + (passed ? 'Отлично! Тест пройден успешно.' : 'К сожалению, тест не пройден. Необходимо набрать минимум 80%.') + '</div>';
+      form.querySelectorAll('input').forEach(function(i){ i.disabled = true; });
+      document.getElementById('finish').disabled = true;
+      result.scrollIntoView({behavior:'smooth', block:'center'});
+
+      if (!currentUser) return;
+      var stat = { test: 'Пожарная безопасность', score: percent, ts: Date.now() };
+
+      var xhr1 = new XMLHttpRequest();
+      xhr1.open('GET', '/api/profile/get?username=' + encodeURIComponent(currentUser), true);
+      xhr1.onload = function(){
+        if (xhr1.status !== 200) return;
+        var profileData = JSON.parse(xhr1.responseText);
+        if (!profileData.ok) return;
+        var user = profileData.user;
+        var stats = Array.isArray(user.stats) ? user.stats : [];
+        stats.push(stat);
+        var update = { stats: stats };
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open('POST', '/api/profile/update', true);
+        xhr2.setRequestHeader('Content-Type', 'application/json');
+        xhr2.onload = function(){
+          if (xhr2.status === 200) {
+            var resp = JSON.parse(xhr2.responseText);
+            if (resp.ok) {
+              result.innerHTML += '<div class="result-saved">✅ Результат сохранён в профиле</div>';
+            }
+          }
+        };
+        xhr2.send(JSON.stringify({ username: currentUser, update: update }));
+      };
+      xhr1.send();
+    });
+  </script>
+</body>
+</html>

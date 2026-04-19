@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Тест — Порядок работы депо</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="site.js"></script>
+</head>
+<body class="page-tests">
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html">Сотрудники</a>
+        <a href="scheme.html">Схема депо</a>
+        <a href="profile.html">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="quiz-header">
+      <h2>⚙️ Порядок работы депо</h2>
+      <p>10 вопросов • Минимум 80% для прохождения</p>
+    </div>
+
+    <div id="auth-gate" class="quiz-auth-gate">
+      <div class="gate-icon">🔒</div>
+      <h3>Требуется авторизация</h3>
+      <p>Для прохождения теста необходимо войти в личный кабинет.</p>
+      <a href="profile.html" class="btn btn-primary">Войти в личный кабинет</a>
+    </div>
+
+    <form id="quiz2" style="display:none" class="quiz-form">
+      <div class="quiz-progress">
+        <span class="progress-label">Ответьте на все вопросы</span>
+        <span class="progress-count" id="answered2">0 / 10</span>
+      </div>
+
+      <ol>
+        <li class="quiz-question">
+          <p>1. Сколько часов длится рабочая неделя по правилам депо?</p>
+          <label><input type="radio" name="q1" value="40"> 40 часов</label>
+          <label><input type="radio" name="q1" value="35"> 35 часов</label>
+          <label><input type="radio" name="q1" value="48"> 48 часов</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>2. Каково максимальное опоздание, после которого нужно уведомлять мастера?</p>
+          <label><input type="radio" name="q2" value="30"> 30 минут</label>
+          <label><input type="radio" name="q2" value="10"> 10 минут</label>
+          <label><input type="radio" name="q2" value="60"> 60 минут</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>3. Через что осуществляется проход на территорию депо?</p>
+          <label><input type="radio" name="q3" value="kpp"> Контрольно-пропускной пункт (КПП)</label>
+          <label><input type="radio" name="q3" value="free"> Свободный проход</label>
+          <label><input type="radio" name="q3" value="gate"> Только через ворота</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>4. Какой режим передвижения на территории для личного автотранспорта?</p>
+          <label><input type="radio" name="q4" value="permits"> По специальным пропускам и не более 15 км/ч</label>
+          <label><input type="radio" name="q4" value="free"> Свободно без ограничений</label>
+          <label><input type="radio" name="q4" value="30"> Скорость до 30 км/ч</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>5. Кто утверждает график сменности?</p>
+          <label><input type="radio" name="q5" value="boss"> Начальник депо</label>
+          <label><input type="radio" name="q5" value="worker"> Любой работник</label>
+          <label><input type="radio" name="q5" value="union"> Профсоюз</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>6. Каков стандартный перерыв для отдыха и питания?</p>
+          <label><input type="radio" name="q6" value="1h"> 1 час</label>
+          <label><input type="radio" name="q6" value="30m"> 30 минут</label>
+          <label><input type="radio" name="q6" value="2h"> 2 часа</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>7. Как оплачивается работа в праздничные дни?</p>
+          <label><input type="radio" name="q7" value="double"> В двойном размере или дополнительным днём отдыха</label>
+          <label><input type="radio" name="q7" value="same"> В обычном размере</label>
+          <label><input type="radio" name="q7" value="none"> Не оплачивается</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>8. Что фиксируется в табеле учёта рабочего времени при опоздании?</p>
+          <label><input type="radio" name="q8" value="late"> Опоздание</label>
+          <label><input type="radio" name="q8" value="none"> Ничего</label>
+          <label><input type="radio" name="q8" value="absence"> Отсутствие</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>9. Как оформляется перевод работника в другую смену в обычных условиях?</p>
+          <label><input type="radio" name="q9" value="written"> С письменного согласия работника и приказом</label>
+          <label><input type="radio" name="q9" value="oral"> Устно</label>
+          <label><input type="radio" name="q9" value="none"> Без оформления</label>
+        </li>
+
+        <li class="quiz-question">
+          <p>10. Что делать при задержке более 30 минут?</p>
+          <label><input type="radio" name="q10" value="notify"> Уведомить мастера или диспетчера</label>
+          <label><input type="radio" name="q10" value="ignore"> Ничего не делать</label>
+          <label><input type="radio" name="q10" value="leave"> Покинуть место</label>
+        </li>
+      </ol>
+
+      <div class="quiz-actions">
+        <button type="button" id="finish2" class="btn btn-primary" style="padding:16px 48px;font-size:17px;">✅ Завершить тест</button>
+      </div>
+    </form>
+
+    <div id="result2" class="quiz-result" style="display:none"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('quiz2').style.display = '';
+    }
+
+    // Track answered questions
+    var form = document.getElementById('quiz2');
+    form.addEventListener('change', function(){
+      var total = 10;
+      var answered = 0;
+      for(var i=1;i<=total;i++){
+        if(form.querySelector('input[name="q'+i+'"]:checked')) answered++;
+      }
+      document.getElementById('answered2').textContent = answered + ' / ' + total;
+    });
+
+    document.getElementById('finish2').addEventListener('click', function(){
+      var answers = { q1: '40', q2: '30', q3: 'kpp', q4: 'permits', q5: 'boss', q6: '1h', q7: 'double', q8: 'late', q9: 'written', q10: 'notify' };
+      var score = 0;
+      var fd = new FormData(form);
+      for (var key in answers){
+        if (fd.get(key) === answers[key]) score++;
+      }
+      var total = Object.keys(answers).length;
+      var percent = Math.round(score / total * 100);
+      var result = document.getElementById('result2');
+      var passed = percent >= 80;
+      result.className = 'quiz-result ' + (passed ? 'pass' : 'fail');
+      result.style.display = 'block';
+      result.innerHTML = '<div class="result-icon">' + (passed ? '🎉' : '😔') + '</div>' +
+        '<div class="result-score">' + percent + '%</div>' +
+        '<strong>' + score + ' из ' + total + ' правильных ответов</strong>' +
+        '<div class="result-text">' + (passed ? 'Отлично! Тест пройден успешно.' : 'К сожалению, тест не пройден. Необходимо набрать минимум 80%.') + '</div>';
+      form.querySelectorAll('input').forEach(function(i){ i.disabled = true; });
+      document.getElementById('finish2').disabled = true;
+      result.scrollIntoView({behavior:'smooth', block:'center'});
+
+      if (!currentUser) return;
+      var stat = { test: 'Порядок работы депо', score: percent, ts: Date.now() };
+
+      var xhr1 = new XMLHttpRequest();
+      xhr1.open('GET', '/api/profile/get?username=' + encodeURIComponent(currentUser), true);
+      xhr1.onload = function(){
+        if (xhr1.status !== 200) return;
+        var profileData = JSON.parse(xhr1.responseText);
+        if (!profileData.ok) return;
+        var user = profileData.user;
+        var stats = Array.isArray(user.stats) ? user.stats : [];
+        stats.push(stat);
+        var update = { stats: stats };
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open('POST', '/api/profile/update', true);
+        xhr2.setRequestHeader('Content-Type', 'application/json');
+        xhr2.onload = function(){
+          if (xhr2.status === 200) {
+            var resp = JSON.parse(xhr2.responseText);
+            if (resp.ok) {
+              result.innerHTML += '<div class="result-saved">✅ Результат сохранён в профиле</div>';
+            }
+          }
+        };
+        xhr2.send(JSON.stringify({ username: currentUser, update: update }));
+      };
+      xhr1.send();
+    });
+  </script>
+</body>
+</html>

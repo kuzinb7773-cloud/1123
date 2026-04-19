@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="api-base" content="">
+  <title>Личный кабинет — Вагонное депо Самара</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="site.js"></script>
+</head>
+<body class="page-tests">
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html">Сотрудники</a>
+        <a href="scheme.html">Схема депо</a>
+        <a href="profile.html" class="active">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Личный кабинет</h2>
+
+    <!-- Login form -->
+    <div id="login-box" class="login-card">
+      <h3>Войти</h3>
+      <form id="login-form" autocomplete="off" onsubmit="return false">
+        <input type="text" name="fake_user" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;" aria-hidden="true">
+        <input type="password" name="fake_pass" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;" aria-hidden="true">
+        <label>Логин <input id="username" name="user_field" autocomplete="off"></label><br>
+        <label>Пароль <input id="password" name="pass_field" type="password" autocomplete="new-password"></label><br>
+        <button id="login" class="btn btn-primary">Войти</button>
+        <div id="login-msg" style="margin-top:8px;color:#b00"></div>
+      </form>
+    </div>
+
+    <!-- Profile content with tabs -->
+    <div id="profile" style="display:none;margin-top:18px">
+      <div class="profile-header">
+        <div class="profile-user-info">
+          <img id="profile-photo-header" src="images/avatar1.svg" alt="photo" class="profile-avatar">
+          <div>
+            <h3 id="profile-username" style="margin:0 0 4px 0">Пользователь</h3>
+            <p id="profile-position-header" style="margin:0;color:#666">Должность</p>
+          </div>
+        </div>
+        <button id="logout" class="btn btn-secondary">Выйти</button>
+      </div>
+
+      <!-- Tabs navigation -->
+      <div class="cabinet-tabs">
+        <button class="tab-btn active" data-tab="profile-tab">📋 Профиль</button>
+        <button class="tab-btn" data-tab="tasks-tab">✅ Задачи</button>
+        <button class="tab-btn" data-tab="accounting-tab">💰 Бухгалтерия</button>
+        <button class="tab-btn" data-tab="news-tab">📰 Новости</button>
+        <button class="tab-btn" data-tab="notifications-tab">🔔 Уведомления</button>
+      </div>
+
+      <!-- Tab content -->
+      <div class="tab-content">
+        <!-- Profile Tab -->
+        <div id="profile-tab" class="tab-pane active">
+          <h3>Мой профиль</h3>
+          <div class="profile-form">
+            <div class="form-row">
+              <div class="profile-photo-section">
+                <img id="profile-photo" src="images/avatar1.svg" alt="photo" class="profile-photo-large">
+              </div>
+              <div class="profile-fields">
+                <div class="form-group">
+                  <label>ФИО</label>
+                  <input id="full_name" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Должность</label>
+                  <input id="position" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Наставник</label>
+                  <input id="mentor" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Дата приёма</label>
+                  <input id="hire_date" type="date" class="form-input">
+                </div>
+              </div>
+            </div>
+            <button id="save" class="btn btn-primary">💾 Сохранить изменения</button>
+          </div>
+        </div>
+
+        <!-- Tasks Tab -->
+        <div id="tasks-tab" class="tab-pane">
+          <h3>Мои задачи</h3>
+          <div class="tasks-section">
+            <h4>Список задач</h4>
+            <ul id="onboarding-list" class="tasks-list"></ul>
+          </div>
+
+          <div class="stats-section">
+            <h4>Статистика выполнения</h4>
+            <div id="stats" class="stats-card"></div>
+          </div>
+
+          <div class="test-summary-section" style="margin-bottom:32px">
+            <h4>Лучшие результаты по тестам</h4>
+            <div id="test-summary" class="test-summary-grid"></div>
+          </div>
+
+          <div class="history-section">
+            <h4>История результатов тестов</h4>
+            <ul id="stats-list" class="history-list"></ul>
+          </div>
+        </div>
+
+        <!-- Accounting Tab -->
+        <div id="accounting-tab" class="tab-pane">
+          <h3>Бухгалтерия</h3>
+          <div class="accounting-section">
+            <h4>Зарплатная ведомость</h4>
+            <p style="margin-bottom:16px">Для получения расчётного листка заполните форму ниже:</p>
+            
+            <div class="payroll-request-form">
+              <label>Месяц:
+                <select id="payroll-month" class="form-input">
+                  <option value="1">Январь</option>
+                  <option value="2">Февраль</option>
+                  <option value="3">Март</option>
+                  <option value="4">Апрель</option>
+                  <option value="5">Май</option>
+                  <option value="6">Июнь</option>
+                  <option value="7">Июль</option>
+                  <option value="8">Август</option>
+                  <option value="9">Сентябрь</option>
+                  <option value="10">Октябрь</option>
+                  <option value="11">Ноябрь</option>
+                  <option value="12">Декабрь</option>
+                </select>
+              </label>
+              
+              <label>Год:
+                <select id="payroll-year" class="form-input">
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                </select>
+              </label>
+              
+              <button id="request-payroll" class="btn btn-primary">Отправить запрос</button>
+            </div>
+
+            <h4 style="margin-top:32px">Список запрошенных ведомостей</h4>
+            <ul id="payroll-requests-list" class="payroll-list"></ul>
+          </div>
+        </div>
+
+        <!-- News Tab -->
+        <div id="news-tab" class="tab-pane">
+          <h3>Новости депо</h3>
+          <div class="news-section">
+            <article class="news-card">
+              <div class="news-header">
+                <span class="news-badge important">Важно</span>
+                <span class="news-date">15 июня 2026</span>
+              </div>
+              <h4 class="news-title">🚧 КПП №1 уходит на ремонт</h4>
+              <p class="news-content">
+                Уважаемые коллеги! С 16 июня 2026 года контрольно-пропускной пункт №1 будет закрыт на плановый ремонт. 
+                Ориентировочный срок завершения работ — 25 июня 2026 года. 
+                <strong>Вход на территорию депо осуществляется только через КПП №2.</strong>
+                Просим учитывать дополнительное время на проход. Приносим извинения за временные неудобства.
+              </p>
+            </article>
+
+            <article class="news-card">
+              <div class="news-header">
+                <span class="news-badge info">Информация</span>
+                <span class="news-date">10 июня 2026</span>
+              </div>
+              <h4 class="news-title">📅 График отпусков на 2027 год</h4>
+              <p class="news-content">
+                Напоминаем всем сотрудникам о необходимости подать заявки на отпуск на 2027 год до 20 декабря 2026 года. 
+                Бланки заявлений можно получить в отделе кадров (кабинет 205).
+              </p>
+            </article>
+
+            <article class="news-card">
+              <div class="news-header">
+                <span class="news-badge success">Поздравление</span>
+                <span class="news-date">1 июня 2026</span>
+              </div>
+              <h4 class="news-title">🎉 Достижения мая</h4>
+              <p class="news-content">
+                Поздравляем бригаду №3 с перевыполнением месячного плана за май на 115%! 
+                Особую благодарность выражаем бригадиру Петрову А.И. за отличную организацию работы.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Notifications Tab -->
+        <div id="notifications-tab" class="tab-pane">
+          <h3>Уведомления</h3>
+          <div class="notifications-section">
+            <div class="notification-item unread">
+              <div class="notification-icon">📋</div>
+              <div class="notification-content">
+                <h4>Новый инструктаж доступен</h4>
+                <p>Добавлена инструкция по работе с новым оборудованием. Просьба ознакомиться до 20.06.2026</p>
+                <span class="notification-time">2 часа назад</span>
+              </div>
+            </div>
+
+            <div class="notification-item unread">
+              <div class="notification-icon">✅</div>
+              <div class="notification-content">
+                <h4>Задача выполнена</h4>
+                <p>Ваша задача "Пройти инструктаж" отмечена как выполненная</p>
+                <span class="notification-time">1 день назад</span>
+              </div>
+            </div>
+
+            <div class="notification-item">
+              <div class="notification-icon">💰</div>
+              <div class="notification-content">
+                <h4>Расчётный листок готов</h4>
+                <p>Расчётный листок за май 2026 года готов к получению</p>
+                <span class="notification-time">3 дня назад</span>
+              </div>
+            </div>
+
+            <div class="notification-item">
+              <div class="notification-icon">🔔</div>
+              <div class="notification-content">
+                <h4>Напоминание</h4>
+                <p>Не забудьте пройти ежеквартальный инструктаж по охране труда</p>
+                <span class="notification-time">5 дней назад</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+    let currentUser = null;
+    const API_BASE = (document.querySelector('meta[name="api-base"]')||{}).content || '';
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    function renderOnboarding(list){
+      const ul = document.getElementById('onboarding-list');
+      ul.innerHTML = '';
+      if(!list || !list.length){
+        ul.innerHTML = '<li style="color:#666;list-style:none;">Нет активных задач</li>';
+        return;
+      }
+      list.forEach(item => {
+        const li = document.createElement('li');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = !!item.completed;
+        cb.onchange = () => { item.completed = cb.checked; renderStats(list); };
+        li.appendChild(cb);
+        li.appendChild(document.createTextNode(' ' + item.title));
+        ul.appendChild(li);
+      });
+    }
+
+    function renderStats(list){
+      const done = list.filter(i=>i.completed).length;
+      const total = list.length;
+      const percent = total > 0 ? Math.round(done/total*100) : 0;
+      const el = document.getElementById('stats');
+      el.innerHTML = `
+        <div class="stat-item">
+          <div class="stat-label">Выполнено задач</div>
+          <div class="stat-value">${done} / ${total}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Процент выполнения</div>
+          <div class="stat-value">${percent}%</div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${percent}%"></div>
+        </div>
+      `;
+    }
+
+    function renderTestSummary(stats){
+      const container = document.getElementById('test-summary');
+      const tests = [
+        {name: 'Правила охраны труда', icon: '📝'},
+        {name: 'Порядок работы депо', icon: '⚙️'},
+        {name: 'Пожарная безопасность', icon: '🔥'}
+      ];
+      if(!stats || !stats.length){ container.innerHTML = '<p style="color:#666">Тесты ещё не пройдены</p>'; return; }
+      container.innerHTML = tests.map(t => {
+        const results = stats.filter(s => s.test === t.name);
+        const best = results.length ? Math.max(...results.map(r => r.score)) : null;
+        const attempts = results.length;
+        const passed = best !== null && best >= 80;
+        const statusClass = best === null ? 'not-taken' : (passed ? 'passed' : 'not-passed');
+        const statusText = best === null ? 'Не пройден' : (passed ? 'Пройден ✅' : 'Не сдан ❌');
+        return `
+          <div class="test-summary-card ${statusClass}">
+            <div class="test-summary-icon">${t.icon}</div>
+            <div class="test-summary-info">
+              <div class="test-summary-name">${t.name}</div>
+              <div class="test-summary-score">${best !== null ? 'Лучший результат: ' + best + '%' : 'Ещё не пройден'}</div>
+              <div class="test-summary-attempts">${attempts > 0 ? 'Попыток: ' + attempts : ''}</div>
+            </div>
+            <div class="test-summary-status ${statusClass}">${statusText}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderHistory(stats){
+      const ul = document.getElementById('stats-list'); ul.innerHTML = '';
+      if(!stats || !stats.length){ ul.innerHTML = '<li style="color:#666;list-style:none;">История результатов пуста</li>'; return; }
+      stats.slice().reverse().forEach(s => {
+        const li = document.createElement('li');
+        const date = new Date(s.ts||0);
+        li.innerHTML = `
+          <div class="history-item">
+            <span class="history-test">${s.test}</span>
+            <span class="history-score ${s.score >= 80 ? 'pass' : 'fail'}">${s.score}%</span>
+            <span class="history-date">${date.toLocaleString('ru-RU')}</span>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    function renderPayrollRequests(requests){
+      const ul = document.getElementById('payroll-requests-list'); ul.innerHTML = '';
+      if(!requests || !requests.length){ ul.innerHTML = '<li style="color:#666;list-style:none;">Запросов пока нет</li>'; return; }
+      requests.slice().reverse().forEach(req => {
+        const li = document.createElement('li');
+        const date = new Date(req.ts||0);
+        const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+        const status = req.status || 'В обработке';
+        const statusClass = status === 'Готово' ? 'status-ready' : 'status-processing';
+        li.innerHTML = `
+          <div class="payroll-item">
+            <span class="payroll-period">${monthNames[req.month-1]} ${req.year}</span>
+            <span class="payroll-status ${statusClass}">${status}</span>
+            <span class="payroll-date">запрошено ${date.toLocaleDateString('ru-RU')}</span>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    document.getElementById('login').addEventListener('click', ()=>{
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      fetch(API_BASE + '/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username, password})})
+        .then(r=>r.json())
+        .then(data=>{
+          if(data.ok){ currentUser = username; localStorage.setItem('currentUser', currentUser); if(window.updateInstructionsNav) window.updateInstructionsNav(); loadProfile(); }
+          else { document.getElementById('login-msg').textContent = 'Неверные учётные данные'; }
+        }).catch(()=>{document.getElementById('login-msg').textContent = 'Ошибка сервера';});
+    });
+
+    function loadProfile(){
+      if(!currentUser){ const remembered = localStorage.getItem('currentUser'); if(remembered) currentUser = remembered; }
+      if(!currentUser) return;
+      fetch(API_BASE + `/api/profile/get?username=${encodeURIComponent(currentUser)}`).then(r=>r.json()).then(data=>{
+        if(!data.ok) return; const user = data.user;
+        document.getElementById('login-box').style.display='none'; document.getElementById('profile').style.display='block';
+        document.getElementById('profile-username').textContent = user.full_name || currentUser;
+        document.getElementById('profile-position-header').textContent = user.position || 'Сотрудник';
+        document.getElementById('profile-photo-header').src = user.photo || 'images/avatar1.svg';
+        document.getElementById('full_name').value = user.full_name || '';
+        document.getElementById('profile-photo').src = user.photo || 'images/avatar1.svg';
+        document.getElementById('position').value = user.position || '';
+        document.getElementById('mentor').value = user.mentor || '';
+        document.getElementById('hire_date').value = user.hire_date || '';
+        renderOnboarding(user.onboarding || []); renderStats(user.onboarding || []); renderTestSummary(user.stats || []); renderHistory(user.stats || []); renderPayrollRequests(user.payroll_requests || []);
+      });
+    }
+
+    document.getElementById('save').addEventListener('click', ()=>{
+      const full_name = document.getElementById('full_name').value;
+      const photo = document.getElementById('profile-photo').src;
+      const position = document.getElementById('position').value;
+      const mentor = document.getElementById('mentor').value;
+      const hire_date = document.getElementById('hire_date').value;
+      const ul = document.getElementById('onboarding-list'); const items = [];
+      Array.from(ul.children).forEach((li, idx)=>{ const cb = li.querySelector('input[type=checkbox]'); if(cb){ const title = li.textContent.trim(); items.push({id: idx+1, title: title, completed: !!cb.checked}); } });
+      fetch(API_BASE + '/api/profile/update', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username: currentUser, update:{full_name, onboarding: items, photo, position, mentor, hire_date}})})
+        .then(r=>r.json()).then(resp=>{ if(resp.ok){ alert('✅ Профиль успешно сохранён'); loadProfile(); } });
+    });
+
+    document.getElementById('logout').addEventListener('click', ()=>{ currentUser = null; document.getElementById('profile').style.display='none'; document.getElementById('login-box').style.display='block'; localStorage.removeItem('currentUser'); if(window.updateInstructionsNav) window.updateInstructionsNav(); document.getElementById('username').value = ''; document.getElementById('password').value = ''; });
+
+    document.getElementById('request-payroll').addEventListener('click', ()=>{
+      const month = parseInt(document.getElementById('payroll-month').value);
+      const year = parseInt(document.getElementById('payroll-year').value);
+      const newRequest = { month: month, year: year, status: 'В обработке', ts: Date.now() };
+      fetch(API_BASE + `/api/profile/get?username=${encodeURIComponent(currentUser)}`).then(r=>r.json()).then(data=>{ if(!data.ok) return; const requests = data.user.payroll_requests || []; requests.push(newRequest); return fetch(API_BASE + '/api/profile/update', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username: currentUser, update:{payroll_requests: requests}}) }); }).then(r=>r.json()).then(resp=>{ if(resp.ok){ alert('✅ Запрос отправлен'); loadProfile(); } }).catch(()=>alert('❌ Ошибка при отправке запроса'));
+    });
+
+    (function(){ const now = new Date(); document.getElementById('payroll-month').value = now.getMonth() + 1; document.getElementById('payroll-year').value = now.getFullYear(); })();
+
+    (function(){ var remembered = localStorage.getItem('currentUser'); if(remembered){ currentUser = remembered; loadProfile(); } })();
+  </script>
+</body>
+</html>

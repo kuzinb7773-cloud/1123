@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Сотрудники — Вагонное депо Самара</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="site.js"></script>
+</head>
+<body class="page-team">
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html" class="active">Сотрудники</a>
+        <a href="scheme.html">Схема депо</a>
+        <a href="profile.html">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="search-panel">
+    <div class="container">
+      <h2 class="search-title">Поиск сотрудника</h2>
+      <input type="text" id="searchInput" class="search-input" placeholder="Введите ФИО сотрудника..." autocomplete="off">
+      <p class="search-hint" id="searchHint"></p>
+    </div>
+  </section>
+
+  <main class="container">
+    <h2>Сотрудники</h2>
+
+    <section class="profiles-grid">
+      <!-- Each .profile-card represents a role with photo, name and short bio -->
+
+      <article class="profile-card">
+        <div class="avatar"><img src="images/avatar1.svg" alt="Иван Иванов"></div>
+        <div class="profile-info">
+          <div class="position">Начальник вагонного депо</div>
+          <div class="name">Иван Иванов</div>
+          <div class="bio">Организация работы депо, принятие ключевых решений, взаимодействие с руководством.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar"><img src="images/avatar2.svg" alt="Мария Петрова"></div>
+        <div class="profile-info">
+          <div class="position">Главный инженер</div>
+          <div class="name">Мария Петрова</div>
+          <div class="bio">Техническая политика депо, контроль за ремонтом и техническим состоянием подвижного состава.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar"><img src="images/avatar3.svg" alt="Алексей Новиков"></div>
+        <div class="profile-info">
+          <div class="position">Заместитель начальника депо (по эксплуатации)</div>
+          <div class="name">Алексей Новиков</div>
+          <div class="bio">Координирует эксплуатационные работы и решение оперативных задач.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color4">ЗР</div>
+        <div class="profile-info">
+          <div class="position">Заместитель начальника депо (по ремонту)</div>
+          <div class="name">Сергей Романов</div>
+          <div class="bio">Руководство ремонтными подразделениями, планирование ремонтов и модернизаций.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color5">ЗК</div>
+        <div class="profile-info">
+          <div class="position">Заместитель начальника депо (по кадрам и соц. вопросам)</div>
+          <div class="name">Ольга Кузнецова</div>
+          <div class="bio">Вопросы кадровой политики, обучения, социальных программ для сотрудников.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color6">НП</div>
+        <div class="profile-info">
+          <div class="position">Начальник производственно-технического отдела</div>
+          <div class="name">Павел Новиков</div>
+          <div class="bio">Планирование производства, внедрение технологических решений и контроль качества работ.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color7">ГБ</div>
+        <div class="profile-info">
+          <div class="position">Главный бухгалтер</div>
+          <div class="name">Галина Белова</div>
+          <div class="bio">Финансовый учёт, отчётность и контроль бюджетных процессов депо.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color8">ПТО</div>
+        <div class="profile-info">
+          <div class="position">Начальник пункта технического обслуживания (ПТО)</div>
+          <div class="name">Дмитрий Смирнов</div>
+          <div class="bio">Организация ТО, контроль выполнения работ на пункте обслуживания.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color1">СИ</div>
+        <div class="profile-info">
+          <div class="position">Старший инженер / Инженер (по труду и зарплате)</div>
+          <div class="name">Светлана Иванова</div>
+          <div class="bio">Учёт рабочего времени, расчёт заработной платы, организация документооборота.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color2">ТО</div>
+        <div class="profile-info">
+          <div class="position">Технолог (1-й и 2-й категории)</div>
+          <div class="name">Роман Тихонов</div>
+          <div class="bio">Разработка технологических карт, оптимизация процессов ремонта и обслуживания.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color3">ЭК</div>
+        <div class="profile-info">
+          <div class="position">Экономист (ведущий, 2-й категории)</div>
+          <div class="name">Екатерина Косова</div>
+          <div class="bio">Анализ затрат, бюджетирование и экономическое планирование.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color4">БУ</div>
+        <div class="profile-info">
+          <div class="position">Бухгалтер (ведущий, 1-й и 2-й категории)</div>
+          <div class="name">Наталья Ульянова</div>
+          <div class="bio">Ведение бухгалтерского учёта и подготовка финансовых документов.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color5">СП</div>
+        <div class="profile-info">
+          <div class="position">Специалист по управлению персоналом / по подготовке кадров</div>
+          <div class="name">Андрей Попов</div>
+          <div class="bio">Подбор персонала, обучение и развитие сотрудников депо.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color6">ТО</div>
+        <div class="profile-info">
+          <div class="position">Техник (оператор) по выпуску вагонов</div>
+          <div class="name">Татьяна Орлова</div>
+          <div class="bio">Оформление выпуска вагонов, контроль технической готовности к отправке.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color7">ДИ</div>
+        <div class="profile-info">
+          <div class="position">Диспетчер вагонного депо</div>
+          <div class="name">Игорь Дорошенко</div>
+          <div class="bio">Координация движения и распределение ресурсов депо в режиме реального времени.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color8">СМ</div>
+        <div class="profile-info">
+          <div class="position">Старший мастер / Мастер участка производства</div>
+          <div class="name">Марсель Мухин</div>
+          <div class="bio">Руководство сменой, контроль качества работ на участке.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color1">БР</div>
+        <div class="profile-info">
+          <div class="position">Бригадир (освобождённый)</div>
+          <div class="name">Виктор Брежнев</div>
+          <div class="bio">Организация работы бригады, распределение задач среди рабочих.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color2">ИН</div>
+        <div class="profile-info">
+          <div class="position">Инструктор</div>
+          <div class="name">Оксана Никифорова</div>
+          <div class="bio">Проведение инструктажей по технике безопасности и обучающих программ.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color3">ПР</div>
+        <div class="profile-info">
+          <div class="position">Приёмщик вагонов</div>
+          <div class="name">Пётр Рахманов</div>
+          <div class="bio">Приём вагонов на депо, первичная проверка состояния и регистрация дефектов.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color4">ОР</div>
+        <div class="profile-info">
+          <div class="position">Осмотрщик вагонов / Осмотрщик-ремонтник вагонов</div>
+          <div class="name">Олег Рязанов</div>
+          <div class="bio">Проведение осмотров, выявление дефектов и подготовка к ремонту.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color5">СЛ</div>
+        <div class="profile-info">
+          <div class="position">Слесарь по ремонту подвижного состава</div>
+          <div class="name">Станислав Лебедев</div>
+          <div class="bio">Выполнение ремонтных работ различной сложности по ремонту подвижного состава.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color6">ОР</div>
+        <div class="profile-info">
+          <div class="position">Оператор по обслуживанию и ремонту вагонов и контейнеров</div>
+          <div class="name">Ольга Романова</div>
+          <div class="bio">Обслуживание конвейерного и вспомогательного оборудования, ремонт контейнеров.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color7">ЭГ</div>
+        <div class="profile-info">
+          <div class="position">Электрогазосварщик</div>
+          <div class="name">Евгений Горбунов</div>
+          <div class="bio">Сварочные работы различной сложности, восстановление элементов вагонов.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color8">ДФ</div>
+        <div class="profile-info">
+          <div class="position">Дефектоскопист</div>
+          <div class="name">Денис Фёдоров</div>
+          <div class="bio">Непосредственный контроль дефектов с помощью магнитного и ультразвукового контроля.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color1">СТ</div>
+        <div class="profile-info">
+          <div class="position">Стропальщик</div>
+          <div class="name">Степан Тарасов</div>
+          <div class="bio">Работа со стропами и погрузочно-разгрузочной техникой, безопасное перемещение грузов.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color2">УБ</div>
+        <div class="profile-info">
+          <div class="position">Уборщик производственных помещений</div>
+          <div class="name">Ульяна Боева</div>
+          <div class="bio">Поддержание порядка и чистоты на территории депо и в производственных помещениях.</div>
+        </div>
+      </article>
+
+      <article class="profile-card">
+        <div class="avatar color3">СМ</div>
+        <div class="profile-info">
+          <div class="position">Секретарь / машинистка (делопроизводитель)</div>
+          <div class="name">Софья Миронова</div>
+          <div class="bio">Документооборот, приём звонков, организация делопроизводства в депо.</div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    var input = document.getElementById('searchInput');
+    var hint  = document.getElementById('searchHint');
+    var cards = document.querySelectorAll('.profiles-grid .profile-card');
+
+    input.addEventListener('input', function(){
+      var q = input.value.trim().toLowerCase();
+      if(!q){
+        cards.forEach(function(c){ c.style.display = ''; });
+        hint.textContent = '';
+        return;
+      }
+      var found = 0;
+      cards.forEach(function(c){
+        var name = (c.querySelector('.name') || {}).textContent || '';
+        var match = name.toLowerCase().indexOf(q) !== -1;
+        c.style.display = match ? '' : 'none';
+        if(match) found++;
+      });
+      if(found === 0){
+        hint.textContent = 'Сотрудник не найден';
+      } else {
+        hint.textContent = 'Найдено: ' + found;
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

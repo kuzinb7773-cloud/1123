@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="api-base" content="">
+  <title>Тест — Правила охраны труда</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="site.js"></script>
+</head>
+<body class="page-tests">
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html">Сотрудники</a>
+        <a href="scheme.html">Схема депо</a>
+        <a href="profile.html">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="quiz-header">
+      <h2>📝 Правила охраны труда</h2>
+      <p>10 вопросов • Минимум 80% для прохождения</p>
+    </div>
+
+    <div id="auth-gate" class="quiz-auth-gate">
+      <div class="gate-icon">🔒</div>
+      <h3>Требуется авторизация</h3>
+      <p>Для прохождения теста необходимо войти в личный кабинет.</p>
+      <a href="profile.html" class="btn btn-primary">Войти в личный кабинет</a>
+    </div>
+
+    <form id="quiz" style="display:none" class="quiz-form">
+      <div class="quiz-progress">
+        <span class="progress-label">Ответьте на все вопросы</span>
+        <span class="progress-count" id="answered">0 / 10</span>
+      </div>
+
+      <ol>
+        <!-- questions omitted for brevity -->
+      </ol>
+
+      <div class="quiz-actions">
+        <button type="button" id="finish" class="btn btn-primary" style="padding:16px 48px;font-size:17px;">✅ Завершить тест</button>
+      </div>
+    </form>
+
+    <div id="result" class="quiz-result" style="display:none"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+    var API_BASE = (document.querySelector('meta[name="api-base"]')||{}).content || '';
+    var currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      document.getElementById('auth-gate').style.display = 'none';
+      document.getElementById('quiz').style.display = '';
+    }
+
+    // Track answered questions
+    var form = document.getElementById('quiz');
+    form.addEventListener('change', function(){
+      var total = 10;
+      var answered = 0;
+      for(var i=1;i<=total;i++){
+        if(form.querySelector('input[name="q'+i+'"]:checked')) answered++;
+      }
+      document.getElementById('answered').textContent = answered + ' / ' + total;
+    });
+
+    document.getElementById('finish').addEventListener('click', function(){
+      var answers = { q1: '18', q2: '15', q3: 'stands', q4: 'year', q5: 'rags', q6: '7', q7: 'vest', q8: 'check', q9: 'designated', q10: 'help' };
+      var score = 0;
+      var fd = new FormData(form);
+      for (var key in answers){
+        if (fd.get(key) === answers[key]) score++;
+      }
+      var total = Object.keys(answers).length;
+      var percent = Math.round(score / total * 100);
+      var result = document.getElementById('result');
+      var passed = percent >= 80;
+      result.className = 'quiz-result ' + (passed ? 'pass' : 'fail');
+      result.style.display = 'block';
+      result.innerHTML = '<div class="result-icon">' + (passed ? '🎉' : '😔') + '</div>' +
+        '<div class="result-score">' + percent + '%</div>' +
+        '<strong>' + score + ' из ' + total + ' правильных ответов</strong>' +
+        '<div class="result-text">' + (passed ? 'Отлично! Тест пройден успешно.' : 'К сожалению, тест не пройден. Необходимо набрать минимум 80%.') + '</div>';
+      form.querySelectorAll('input').forEach(function(i){ i.disabled = true; });
+      document.getElementById('finish').disabled = true;
+      result.scrollIntoView({behavior:'smooth', block:'center'});
+
+      if (!currentUser) return;
+      var stat = { test: 'Правила охраны труда', score: percent, ts: Date.now() };
+
+      var xhr1 = new XMLHttpRequest();
+      xhr1.open('GET', API_BASE + '/api/profile/get?username=' + encodeURIComponent(currentUser), true);
+      xhr1.onload = function(){
+        if (xhr1.status !== 200) return;
+        var profileData = JSON.parse(xhr1.responseText);
+        if (!profileData.ok) return;
+        var user = profileData.user;
+        var stats = Array.isArray(user.stats) ? user.stats : [];
+        stats.push(stat);
+        var update = { stats: stats };
+
+        var xhr2 = new XMLHttpRequest();
+        xhr2.open('POST', API_BASE + '/api/profile/update', true);
+        xhr2.setRequestHeader('Content-Type', 'application/json');
+        xhr2.onload = function(){
+          if (xhr2.status === 200) {
+            var resp = JSON.parse(xhr2.responseText);
+            if (resp.ok) {
+              result.innerHTML += '<div class="result-saved">✅ Результат сохранён в профиле</div>';
+            }
+          }
+        };
+        xhr2.send(JSON.stringify({ username: currentUser, update: update }));
+      };
+      xhr1.send();
+    });
+  </script>
+</body>
+</html>

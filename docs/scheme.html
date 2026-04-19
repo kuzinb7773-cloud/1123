@@ -1,0 +1,676 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Схема депо — Вагонное депо Самара</title>
+  <link rel="stylesheet" href="styles.css?v=9">
+  <script src="site.js"></script>
+  <style>
+    .scheme-viewer{
+      position:relative;
+      background:var(--bg-card);
+      border-radius:12px;
+      box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-top:20px;
+    }
+    .scheme-toolbar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px;
+      background:var(--bg-card-alt);
+      border-bottom:1px solid var(--border-color);
+      flex-wrap:wrap;
+    }
+    .scheme-toolbar button{
+      width:36px;height:36px;
+      border:1px solid var(--border-color);
+      border-radius:8px;
+      background:var(--bg-card);
+      color:var(--text-primary);
+      font-size:18px;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:background 0.2s;
+    }
+    .scheme-toolbar button:hover{background:var(--hover-bg)}
+    .scheme-toolbar .zoom-label{
+      font-size:13px;
+      color:var(--text-secondary);
+      min-width:48px;
+      text-align:center;
+    }
+    .scheme-toolbar .sep{
+      width:1px;height:24px;
+      background:var(--border-color);
+      margin:0 4px;
+    }
+    .scheme-toolbar .hint{
+      font-size:13px;
+      color:var(--text-secondary);
+      margin-left:auto;
+    }
+    .scheme-viewport{
+      position:relative;
+      overflow:hidden;
+      cursor:grab;
+      height:70vh;
+      min-height:400px;
+      background:#e8e8e8;
+    }
+    [data-theme="dark"] .scheme-viewport{background:#1a1c24}
+    .scheme-viewport.grabbing{cursor:grabbing}
+    .scheme-canvas{
+      position:absolute;
+      transform-origin:0 0;
+      transition:none;
+    }
+    .scheme-canvas img{
+      display:block;
+      max-width:none;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+    .scheme-overlay{
+      position:absolute;
+      top:0;left:0;
+      width:100%;height:100%;
+      pointer-events:none;
+    }
+    .hotspot{
+      position:absolute;
+      pointer-events:auto;
+      width:18px;height:18px;
+      margin-left:-9px;margin-top:-9px;
+      border-radius:50%;
+      background:rgba(25,118,210,0.75);
+      border:1.5px solid #fff;
+      color:#fff;
+      font-size:8px;
+      font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      transition:transform 0.2s, background 0.2s;
+      box-shadow:0 2px 6px rgba(0,0,0,0.3);
+      z-index:2;
+    }
+    .hotspot:hover{
+      transform:scale(1.3);
+      background:rgba(25,118,210,0.95);
+      z-index:3;
+    }
+    .hotspot.active{
+      background:#d32f2f;
+      transform:scale(1.3);
+      z-index:4;
+    }
+    .scheme-tooltip{
+      display:none;
+      position:fixed;
+      background:var(--bg-card);
+      color:var(--text-primary);
+      border:1px solid var(--border-color);
+      border-radius:10px;
+      padding:14px 18px;
+      box-shadow:0 6px 24px rgba(0,0,0,0.18);
+      z-index:1000;
+      max-width:300px;
+      min-width:180px;
+      pointer-events:none;
+    }
+    .scheme-tooltip.visible{display:block}
+    .scheme-tooltip .tt-num{
+      font-size:13px;
+      color:var(--text-accent);
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .scheme-tooltip .tt-title{
+      font-size:15px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .scheme-tooltip .tt-desc{
+      font-size:13px;
+      color:var(--text-secondary);
+      line-height:1.5;
+    }
+    .scheme-no-image{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      color:var(--text-secondary);
+      text-align:center;
+      padding:40px;
+    }
+    .scheme-no-image .icon{font-size:64px;margin-bottom:16px}
+    .toggle-hotspots{
+      font-size:13px !important;
+      width:auto !important;
+      padding:0 12px !important;
+    }
+    .edit-btn{
+      font-size:13px !important;
+      width:auto !important;
+      padding:0 12px !important;
+    }
+    .edit-btn.active{
+      background:#d32f2f !important;
+      color:#fff !important;
+      border-color:#d32f2f !important;
+    }
+    .scheme-viewport.edit-mode{cursor:default}
+    .scheme-viewport.edit-mode .hotspot{
+      cursor:move;
+      animation:pulse-edit 1.5s infinite;
+    }
+    .scheme-viewport.edit-mode .hotspot.hs-dragging{
+      background:#d32f2f;
+      transform:scale(1.5);
+      z-index:100;
+      animation:none;
+    }
+    @keyframes pulse-edit{
+      0%,100%{box-shadow:0 0 0 0 rgba(25,118,210,0.5)}
+      50%{box-shadow:0 0 0 8px rgba(25,118,210,0)}
+    }
+    .edit-bar{
+      display:none;
+      padding:10px 16px;
+      background:#fff3cd;
+      color:#856404;
+      border-top:1px solid #ffc107;
+      font-size:13px;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    [data-theme="dark"] .edit-bar{background:#3a3000;color:#ffc107;border-color:#665500}
+    .edit-bar.visible{display:flex}
+    .edit-bar button{
+      padding:4px 14px;
+      border:1px solid var(--border-color);
+      border-radius:6px;
+      background:var(--bg-card);
+      color:var(--text-primary);
+      cursor:pointer;
+      font-size:13px;
+    }
+    .edit-bar button:hover{background:var(--hover-bg)}
+    .edit-bar .save-btn{background:#4caf50;color:#fff;border-color:#4caf50}
+    .edit-bar .save-btn:hover{background:#388e3c}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <h1 class="logo">Вагонное депо <span>Самара</span></h1>
+      <nav class="nav top-nav">
+        <a href="index.html">Главная</a>
+        <a href="team.html">Сотрудники</a>
+        <a href="scheme.html" class="active">Схема депо</a>
+        <a href="profile.html">Личный кабинет</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <h2>План ремонтного депо</h2>
+
+    <div class="scheme-viewer">
+      <div class="scheme-toolbar">
+        <button id="zoom-in" title="Приблизить">+</button>
+        <button id="zoom-out" title="Отдалить">−</button>
+        <span class="zoom-label" id="zoom-label">100%</span>
+        <div class="sep"></div>
+        <button id="zoom-fit" title="Вписать в экран">⊡</button>
+        <button id="zoom-reset" title="Сбросить (100%)">1:1</button>
+        <div class="sep"></div>
+        <button class="toggle-hotspots" id="toggle-hotspots" title="Показать/скрыть метки">📍 Метки</button>
+        <div class="sep"></div>
+        <button class="edit-btn" id="edit-btn" title="Режим расстановки меток">✏️ Расставить метки</button>
+        <span class="hint">Колёсико мыши — масштаб · Перетаскивание — перемещение</span>
+      </div>
+      <div class="edit-bar" id="edit-bar">
+        <span>⚠️ <b>Режим редактирования:</b> перетаскивайте метки на правильные позиции</span>
+        <button class="save-btn" id="save-positions">💾 Сохранить позиции</button>
+        <button id="reset-positions">↩️ Сбросить</button>
+        <span id="drag-info" style="margin-left:auto;font-family:monospace"></span>
+      </div>
+      <div class="scheme-viewport" id="viewport">
+        <div class="scheme-canvas" id="canvas">
+          <img id="scheme-img" src="images/scheme.png" alt="План ремонтного депо" draggable="false">
+          <div class="scheme-overlay" id="overlay">
+            <!-- hotspots injected by JS -->
+          </div>
+        </div>
+        <div class="scheme-no-image" id="no-image" style="display:none">
+          <div class="icon">🏗️</div>
+          <h3>Изображение схемы не найдено</h3>
+          <p>Сохраните файл плана как <code>images/scheme.png</code></p>
+        </div>
+      </div>
+    </div>
+    <div class="scheme-tooltip" id="tooltip">
+      <div class="tt-num" id="tt-num"></div>
+      <div class="tt-title" id="tt-title"></div>
+      <div class="tt-desc" id="tt-desc"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 Вагонное депо Самара — Все права защищены</p>
+    </div>
+  </footer>
+
+  <script>
+  (function(){
+    /* ── Zone data (number → name, description) ── */
+    var ZONES = {
+      1:  {n:'Путь №1', d:'Ремонтный путь — участок ТР-3'},
+      2:  {n:'Путь №2', d:'Ремонтный путь — участок ТР-2. Дополнительные ремонтные линии для текущего ремонта подвижного состава'},
+      3:  {n:'Путь №3', d:'Ремонтный путь — участок ТР-1 и ТО-3. Техническое обслуживание, диагностика, замена колёсных пар, тормозных систем'},
+      4:  {n:'Кабинет дежурного по депо', d:'Участок ТР-3, верхний ряд'},
+      5:  {n:'Комната отдыха персонала', d:'Участок ТР-3, верхний ряд'},
+      6:  {n:'Санузел мужской', d:'Участок ТР-3, верхний ряд'},
+      7:  {n:'Санузел женский', d:'Участок ТР-3, верхний ряд'},
+      8:  {n:'Душевая мужская', d:'Участок ТР-3, верхний ряд'},
+      9:  {n:'Раздевалка мужская', d:'Участок ТР-3, верхний ряд'},
+      10: {n:'Гардеробная', d:'Участок ТР-3, верхний ряд'},
+      11: {n:'Склад инструментов', d:'Участок ТР-3, верхний ряд'},
+      12: {n:'Лаборатория контроля качества', d:'Участок ТР-3, верхний ряд'},
+      13: {n:'Архив технической документации', d:'Участок ТР-3, верхний ряд'},
+      14: {n:'Офис инженера по охране труда', d:'Участок ТР-3, верхний ряд'},
+      15: {n:'Комната для совещаний', d:'Участок ТР-3, верхний ряд'},
+      16: {n:'Буфет / столовая', d:'Для работников участка ТР-3'},
+      17: {n:'Буфет / столовая', d:'Для работников участка ТР-3'},
+      18: {n:'Хранение СИЗ', d:'Помещение для хранения средств индивидуальной защиты'},
+      19: {n:'Вентиляционная камера', d:'Участок ТР-3'},
+      20: {n:'Электрощитовая', d:'Электрощитовая участка ТР-3'},
+      21: {n:'Кабинет старшего мастера', d:'Средний уровень — административная зона'},
+      22: {n:'Приёмная главного инженера', d:'Средний уровень — административная зона'},
+      23: {n:'Каб. зам. по ремонту / начальника депо', d:'Средний уровень — административная зона'},
+      24: {n:'Кабинет главного механика', d:'Средний уровень — административная зона'},
+      25: {n:'Диспетчерская служба', d:'Средний уровень — административная зона'},
+      26: {n:'Пульт управления кранами', d:'Управление кранами и подъёмниками'},
+      27: {n:'Склад запасных частей', d:'Средний уровень — складская зона'},
+      28: {n:'Зона комплектации узлов', d:'Средний уровень — складская зона'},
+      29: {n:'Упаковочный участок', d:'Средний уровень — складская зона'},
+      31: {n:'Главный вход в цех ТР-3', d:'Основной проход в ремонтный цех'},
+      32: {n:'Подъёмник мостовой (кран)', d:'Основное производственное оборудование'},
+      33: {n:'Основная ремонтная зона', d:'Ремонт локомотивов и вагонов'},
+      34: {n:'Участок сварочных работ', d:'Основное производственное пространство'},
+      '34a':{n:'Пост газовой резки', d:'Основное производственное пространство'},
+      35: {n:'Станок токарный универсальный', d:'Основное производственное оборудование'},
+      36: {n:'Линия мойки деталей', d:'Основное производственное пространство'},
+      37: {n:'Участок дефектоскопии', d:'Контроль качества деталей'},
+      38: {n:'Стол контролёра ОТК', d:'Отдел технического контроля'},
+      39: {n:'Зона сборки агрегатов', d:'Основное производственное пространство'},
+      40: {n:'Пресс гидравлический', d:'Основное производственное оборудование'},
+      41: {n:'Участок окраски', d:'Основное производственное пространство'},
+      42: {n:'Сушильная камера', d:'Основное производственное пространство'},
+      43: {n:'Участок электромонтажных работ', d:'Основное производственное пространство'},
+      44: {n:'Испытательный стенд двигателей', d:'Основное производственное оборудование'},
+      45: {n:'Участок пневмогидравлики', d:'Основное производственное пространство'},
+      46: {n:'Ремонт мелких деталей', d:'Основное производственное пространство'},
+      47: {n:'Насосная станция', d:'Инженерные системы'},
+      48: {n:'Коридор служебный', d:'Служебные помещения'},
+      49: {n:'Лифт грузовой', d:'Служебные помещения'},
+      50: {n:'Лестница эвакуационная', d:'Пути эвакуации'},
+      51: {n:'Пожарный пост', d:'Системы безопасности'},
+      52: {n:'Щит пожарной сигнализации', d:'Системы безопасности'},
+      53: {n:'Склад готовых деталей', d:'Большой склад готовых деталей'},
+      54: {n:'Рампа погрузочно-разгрузочная', d:'Зона погрузки и разгрузки'},
+      55: {n:'Участок ТО-1, ТО-2 и ТО-3', d:'Техническое обслуживание — нижний уровень'}
+    };
+
+    /* ── Default hotspot positions (% of image width/height) ── */
+    var DEFAULT_SPOTS = [
+      [1,  89, 22],
+      [2,  32, 82],
+      [3,  32, 92],
+      [4,   4,  5], [5,   6,  5], [6,   8,  7],
+      [7,  13,  6],
+      [8,  18,  5], [9,  18,  7], [10, 20,  7],
+      [11, 22,  6],
+      [12, 25,  4], [13, 28,  4],
+      [14, 33,  5], [15, 37,  5], [16, 40,  5],
+      [17, 43,  4], [18, 43,  6],
+      [19, 47,  4], [20, 47,  6],
+      [21, 61, 24],
+      [22, 65, 23], [23, 68, 23],
+      [24, 72, 21], [25, 74, 23],
+      [26, 75, 26],
+      [27, 82, 24], [28, 86, 24], [29, 90, 24],
+      [31, 35, 10],
+      [32,  6, 17],
+      [33, 27, 17],
+      [34, 40, 17], ['34a', 46, 17],
+      [35, 10, 23],
+      [36, 35, 23],
+      [37,  7, 28],
+      [38, 12, 32],
+      [39,  8, 50],
+      [40, 17, 40],
+      [41, 24, 43],
+      [42, 22, 55],
+      [43, 35, 43],
+      [44, 39, 48],
+      [45, 42, 45],
+      [46, 28, 57], [47, 31, 57],
+      [48, 57, 43],
+      [49, 56, 55],
+      [50, 63, 43],
+      [51, 72, 42],
+      [52, 72, 53],
+      [53, 83, 44],
+      [54, 92, 55],
+      [55, 30, 78]
+    ];
+
+    /* ── Load saved positions from localStorage or use defaults ── */
+    var STORAGE_KEY = 'scheme_hotspot_positions';
+    var SPOTS;
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if(saved) {
+        SPOTS = JSON.parse(saved);
+      } else {
+        SPOTS = DEFAULT_SPOTS.map(function(s){ return [s[0], s[1], s[2]]; });
+      }
+    } catch(e) {
+      SPOTS = DEFAULT_SPOTS.map(function(s){ return [s[0], s[1], s[2]]; });
+    }
+
+    /* ── DOM refs ── */
+    var viewport = document.getElementById('viewport');
+    var canvas   = document.getElementById('canvas');
+    var img      = document.getElementById('scheme-img');
+    var overlay  = document.getElementById('overlay');
+    var tooltip  = document.getElementById('tooltip');
+    var noImage  = document.getElementById('no-image');
+    var editBar  = document.getElementById('edit-bar');
+    var dragInfo = document.getElementById('drag-info');
+
+    /* ── State ── */
+    var scale = 1, minScale = 0.2, maxScale = 5;
+    var panX = 0, panY = 0;
+    var dragging = false, dragStartX, dragStartY, startPanX, startPanY;
+    var imgW = 0, imgH = 0;
+    var hotspotsVisible = true;
+    var editMode = false;
+    var hsDragging = null; // hotspot being dragged in edit mode
+
+    /* ── Apply transform ── */
+    function applyTransform(){
+      canvas.style.transform = 'translate('+panX+'px,'+panY+'px) scale('+scale+')';
+      document.getElementById('zoom-label').textContent = Math.round(scale*100)+'%';
+    }
+
+    /* ── Find SPOTS index by zone id ── */
+    function findSpotIdx(id){
+      for(var i=0;i<SPOTS.length;i++){ if(String(SPOTS[i][0])===String(id)) return i; }
+      return -1;
+    }
+
+    /* ── Build hotspots ── */
+    function buildHotspots(){
+      overlay.innerHTML = '';
+      SPOTS.forEach(function(s){
+        var id = s[0], lp = s[1], tp = s[2];
+        var el = document.createElement('div');
+        el.className = 'hotspot';
+        el.setAttribute('data-zone', id);
+        el.style.left = lp+'%';
+        el.style.top  = tp+'%';
+        el.textContent = id;
+
+        /* Normal mode: tooltip */
+        el.addEventListener('mouseenter', function(e){
+          if(editMode) return;
+          showTooltip(id, e);
+        });
+        el.addEventListener('mouseleave', function(){
+          if(editMode) return;
+          hideTooltip();
+        });
+        el.addEventListener('click', function(e){
+          e.stopPropagation();
+          if(!editMode) showTooltip(id, e);
+        });
+
+        /* Edit mode: drag start */
+        el.addEventListener('mousedown', function(e){
+          if(!editMode || e.button !== 0) return;
+          e.stopPropagation();
+          e.preventDefault();
+          hsDragging = {el: el, id: id};
+          el.classList.add('hs-dragging');
+          hideTooltip();
+        });
+
+        overlay.appendChild(el);
+      });
+    }
+
+    /* ── Edit mode: mouse move/up for hotspot drag ── */
+    window.addEventListener('mousemove', function(e){
+      if(hsDragging){
+        // Convert screen coords to image-relative %
+        var rect = canvas.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width * 100;
+        var y = (e.clientY - rect.top)  / rect.height * 100;
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+        hsDragging.el.style.left = x+'%';
+        hsDragging.el.style.top  = y+'%';
+        // Update SPOTS array
+        var idx = findSpotIdx(hsDragging.id);
+        if(idx >= 0){
+          SPOTS[idx][1] = Math.round(x*10)/10;
+          SPOTS[idx][2] = Math.round(y*10)/10;
+        }
+        dragInfo.textContent = '№'+hsDragging.id+': '+SPOTS[idx][1]+'%, '+SPOTS[idx][2]+'%';
+        return;
+      }
+      if(!dragging) return;
+      panX = startPanX + (e.clientX - dragStartX);
+      panY = startPanY + (e.clientY - dragStartY);
+      applyTransform();
+    });
+    window.addEventListener('mouseup', function(){
+      if(hsDragging){
+        hsDragging.el.classList.remove('hs-dragging');
+        hsDragging = null;
+        return;
+      }
+      dragging = false;
+      viewport.classList.remove('grabbing');
+    });
+
+    /* ── Tooltip ── */
+    function showTooltip(id, e){
+      var z = ZONES[id];
+      if(!z) return;
+      document.getElementById('tt-num').textContent = '№ '+id;
+      document.getElementById('tt-title').textContent = z.n;
+      document.getElementById('tt-desc').textContent = z.d || '';
+      document.getElementById('tt-desc').style.display = z.d ? '' : 'none';
+      tooltip.classList.add('visible');
+      var tx = e.clientX + 16;
+      var ty = e.clientY - 10;
+      var tw = tooltip.offsetWidth;
+      var th = tooltip.offsetHeight;
+      if(tx + tw > window.innerWidth - 10) tx = e.clientX - tw - 16;
+      if(ty + th > window.innerHeight - 10) ty = window.innerHeight - th - 10;
+      if(ty < 10) ty = 10;
+      tooltip.style.left = tx+'px';
+      tooltip.style.top  = ty+'px';
+    }
+    function hideTooltip(){
+      tooltip.classList.remove('visible');
+    }
+
+    /* ── Zoom ── */
+    function zoomTo(newScale, cx, cy){
+      if(cx === undefined){ cx = viewport.clientWidth/2; cy = viewport.clientHeight/2; }
+      var oldScale = scale;
+      newScale = Math.max(minScale, Math.min(maxScale, newScale));
+      var ratio = newScale / oldScale;
+      panX = cx - (cx - panX) * ratio;
+      panY = cy - (cy - panY) * ratio;
+      scale = newScale;
+      applyTransform();
+    }
+
+    function fitToViewport(){
+      if(!imgW) return;
+      var vw = viewport.clientWidth;
+      var vh = viewport.clientHeight;
+      var s = Math.min(vw / imgW, vh / imgH, 1);
+      scale = s;
+      panX = (vw - imgW * s) / 2;
+      panY = (vh - imgH * s) / 2;
+      applyTransform();
+    }
+
+    /* ── Mouse pan (viewport) ── */
+    viewport.addEventListener('mousedown', function(e){
+      if(e.button !== 0 || hsDragging) return;
+      dragging = true;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      startPanX = panX;
+      startPanY = panY;
+      viewport.classList.add('grabbing');
+      e.preventDefault();
+    });
+
+    /* ── Wheel zoom ── */
+    viewport.addEventListener('wheel', function(e){
+      e.preventDefault();
+      var rect = viewport.getBoundingClientRect();
+      var cx = e.clientX - rect.left;
+      var cy = e.clientY - rect.top;
+      var factor = e.deltaY < 0 ? 1.15 : 1/1.15;
+      zoomTo(scale * factor, cx, cy);
+    }, {passive:false});
+
+    /* ── Touch pinch/pan ── */
+    var lastTouchDist = 0, lastTouchCenter = null;
+    viewport.addEventListener('touchstart', function(e){
+      if(e.touches.length === 1){
+        dragging = true;
+        dragStartX = e.touches[0].clientX;
+        dragStartY = e.touches[0].clientY;
+        startPanX = panX; startPanY = panY;
+      }
+      if(e.touches.length === 2){
+        dragging = false;
+        var dx = e.touches[1].clientX - e.touches[0].clientX;
+        var dy = e.touches[1].clientY - e.touches[0].clientY;
+        lastTouchDist = Math.sqrt(dx*dx+dy*dy);
+        lastTouchCenter = {
+          x:(e.touches[0].clientX+e.touches[1].clientX)/2,
+          y:(e.touches[0].clientY+e.touches[1].clientY)/2
+        };
+      }
+    }, {passive:true});
+    viewport.addEventListener('touchmove', function(e){
+      e.preventDefault();
+      if(e.touches.length === 1 && dragging){
+        panX = startPanX + (e.touches[0].clientX - dragStartX);
+        panY = startPanY + (e.touches[0].clientY - dragStartY);
+        applyTransform();
+      }
+      if(e.touches.length === 2 && lastTouchDist){
+        var dx = e.touches[1].clientX - e.touches[0].clientX;
+        var dy = e.touches[1].clientY - e.touches[0].clientY;
+        var dist = Math.sqrt(dx*dx+dy*dy);
+        var factor = dist / lastTouchDist;
+        lastTouchDist = dist;
+        var rect = viewport.getBoundingClientRect();
+        var cx = lastTouchCenter.x - rect.left;
+        var cy = lastTouchCenter.y - rect.top;
+        zoomTo(scale * factor, cx, cy);
+      }
+    }, {passive:false});
+    viewport.addEventListener('touchend', function(){ dragging=false; lastTouchDist=0; });
+
+    /* ── Toolbar buttons ── */
+    document.getElementById('zoom-in').addEventListener('click', function(){ zoomTo(scale*1.3); });
+    document.getElementById('zoom-out').addEventListener('click', function(){ zoomTo(scale/1.3); });
+    document.getElementById('zoom-fit').addEventListener('click', fitToViewport);
+    document.getElementById('zoom-reset').addEventListener('click', function(){
+      scale=1; panX=0; panY=0; applyTransform();
+    });
+    document.getElementById('toggle-hotspots').addEventListener('click', function(){
+      hotspotsVisible = !hotspotsVisible;
+      overlay.style.display = hotspotsVisible ? '' : 'none';
+      this.style.opacity = hotspotsVisible ? '1' : '0.5';
+    });
+
+    /* ── Edit mode toggle ── */
+    var editBtn = document.getElementById('edit-btn');
+    editBtn.addEventListener('click', function(){
+      editMode = !editMode;
+      editBtn.classList.toggle('active', editMode);
+      editBtn.textContent = editMode ? '✏️ Режим вкл.' : '✏️ Расставить метки';
+      viewport.classList.toggle('edit-mode', editMode);
+      editBar.classList.toggle('visible', editMode);
+      if(!editMode){
+        hideTooltip();
+        dragInfo.textContent = '';
+      }
+    });
+
+    /* ── Save positions ── */
+    document.getElementById('save-positions').addEventListener('click', function(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(SPOTS));
+      alert('✅ Позиции меток сохранены!\n\nОни будут применяться при каждом открытии страницы.');
+    });
+
+    /* ── Reset positions to defaults ── */
+    document.getElementById('reset-positions').addEventListener('click', function(){
+      if(!confirm('Сбросить все метки на позиции по умолчанию?')) return;
+      SPOTS = DEFAULT_SPOTS.map(function(s){ return [s[0], s[1], s[2]]; });
+      localStorage.removeItem(STORAGE_KEY);
+      buildHotspots();
+      dragInfo.textContent = 'Сброшено';
+    });
+
+    /* ── Hide tooltip on viewport click ── */
+    viewport.addEventListener('click', hideTooltip);
+
+    /* ── Image load ── */
+    img.addEventListener('load', function(){
+      imgW = img.naturalWidth;
+      imgH = img.naturalHeight;
+      canvas.style.width  = imgW+'px';
+      canvas.style.height = imgH+'px';
+      overlay.style.width  = imgW+'px';
+      overlay.style.height = imgH+'px';
+      buildHotspots();
+      fitToViewport();
+      noImage.style.display = 'none';
+      canvas.style.display = '';
+    });
+    img.addEventListener('error', function(){
+      canvas.style.display = 'none';
+      noImage.style.display = '';
+    });
+
+    /* ── Fit on window resize ── */
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(fitToViewport, 200);
+    });
+  })();
+  </script>
+</body>
+</html>
